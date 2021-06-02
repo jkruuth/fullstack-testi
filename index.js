@@ -2,6 +2,7 @@ require('dotenv').config()
 const { request, response } = require('express')
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose')
 const Note = require('./models/note')
 
 
@@ -23,7 +24,7 @@ app.use(requestLogger)
 
 
 
-let notes = [
+/* let notes = [
     {
       id: 1,
       content: "HTML is easy",
@@ -42,7 +43,7 @@ let notes = [
       date: "2020-01-10T19:20:14.298Z",
       important: true
     }
-  ]
+  ] */
 
   app.get('/api/notes', (request, response) => {
     Note.find({}).then(notes => {
@@ -80,19 +81,17 @@ let notes = [
 
   app.post('/api/notes', (request, response) => {
     const body = request.body
-
+  
     if (body.content === undefined) {
-        return response.status(400).json({
-            error: 'content missing'
-        })
+      return response.status(400).json({ error: 'content missing' })
     }
-
-    const note = {
-        content: body.content,
-        important: body.important || false,
-        date: new Date(),
-    }
-
+  
+    const note = new Note({
+      content: body.content,
+      important: body.important || false,
+      date: new Date(),
+    })
+  
     note.save().then(savedNote => {
       response.json(savedNote)
     })
