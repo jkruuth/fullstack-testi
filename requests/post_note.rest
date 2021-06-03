@@ -3,6 +3,6 @@ post http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "VS Testi part2",
+    "content": "VS",
     "important": true
 }
